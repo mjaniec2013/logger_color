@@ -129,7 +129,19 @@ log_this_set <- function( log_level ) {
 log_this <- function(message, leading_empty_lines=0) {
     stopifnot(exists('logging'))
   
-    switch(logging$get(),
+   log_level <- logging$get()
+   
+   if (leading_empty_lines>0 && log_level %in% c('info', 'warn', 'error')) {
+     
+     for (i in seq_len(leading_empty_lines)) {
+       
+       cat("\n")
+       
+     }
+     
+   }
+  
+    switch(log_level,
            info  = logger::log_info(message),
            warn  = logger::log_warn(message),
            error = logger::log_error(message),
@@ -139,4 +151,4 @@ log_this <- function(message, leading_empty_lines=0) {
              logger::log_info(message)
            })
 }
-# log_this('log message')
+# log_this('log message', 2)
